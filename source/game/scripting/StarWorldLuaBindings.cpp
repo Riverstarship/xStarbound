@@ -914,8 +914,8 @@ namespace LuaBindings {
     callbacks.registerCallbackWithSignature<bool, List<Vec2I>, String, Vec2F, String, float, Maybe<unsigned>, Maybe<EntityId>>("damageTiles", LUA_BIND(WorldEnvironmentCallbacks::damageTiles, world, _1, _2, _3, _4, _5, _6, _7));
     callbacks.registerCallbackWithSignature<bool, Vec2F, float, String, Vec2F, String, float, Maybe<unsigned>, Maybe<EntityId>>("damageTileArea", LUA_BIND(WorldEnvironmentCallbacks::damageTileArea, world, _1, _2, _3, _4, _5, _6, _7, _8));
     callbacks.registerCallbackWithSignature<bool, Vec2I, String, String, Maybe<int>, bool, bool>("placeMaterial", LUA_BIND(WorldEnvironmentCallbacks::placeMaterial, world, _1, _2, _3, _4, _5, _6));
-    callbacks.registerCallbackWithSignature<bool, List<Vec2I>, String, String, Maybe<int>, bool>("replaceMaterials", bind(WorldEnvironmentCallbacks::replaceMaterials, world, caller, _1, _2, _3, _4, _5));
-    callbacks.registerCallbackWithSignature<bool, Vec2F, float, String, String, Maybe<int>, bool>("replaceMaterialArea", bind(WorldEnvironmentCallbacks::replaceMaterialArea, world, caller, _1, _2, _3, _4, _5, _6));
+    callbacks.registerCallbackWithSignature<bool, List<Vec2I>, String, String, Maybe<int>, bool>("replaceMaterials", LUA_BIND(WorldEnvironmentCallbacks::replaceMaterials, world, _1, _2, _3, _4, _5));
+    callbacks.registerCallbackWithSignature<bool, Vec2F, float, String, String, Maybe<int>, bool>("replaceMaterialArea", LUA_BIND(WorldEnvironmentCallbacks::replaceMaterialArea, world, _1, _2, _3, _4, _5, _6));
     callbacks.registerCallbackWithSignature<bool, Vec2I, String, String, Maybe<int>, bool>("placeMod", LUA_BIND(WorldEnvironmentCallbacks::placeMod, world, _1, _2, _3, _4, _5));
 
     callbacks.registerCallback("radialTileQuery", [world](Vec2F center, float radius, String layerName) -> List<Vec2I> {
@@ -2404,7 +2404,7 @@ namespace LuaBindings {
     return world->modifyTile(tilePosition, placeMaterial, allowOverlap, allowDisconnected);
   }
 
-  bool WorldEnvironmentCallbacks::replaceMaterials(World* world,
+  bool WorldEnvironmentCallbacks::replaceMaterials(SmugglePtr<World> world,
       List<Vec2I> const& tilePositions,
       String const& layer,
       String const& materialName,
@@ -2463,7 +2463,7 @@ namespace LuaBindings {
     return world->replaceTiles(modifications, damage).empty();
   }
   
-  bool WorldEnvironmentCallbacks::replaceMaterialArea(World* world,
+  bool WorldEnvironmentCallbacks::replaceMaterialArea(SmugglePtr<World> world,
       Vec2F center,
       float radius,
       String const& layer,
